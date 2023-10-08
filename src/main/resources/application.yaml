@@ -1,1 +1,60 @@
-
+spring:
+  profiles:
+    active: develop-h2
+    group:
+      develop-h2:
+        - common
+        - develop
+      develop-mysql:
+        - common
+        - develop
+---
+spring:
+  config:
+    activate:
+      on-profile: common
+  batch:
+    job:
+      enabled: false
+  quartz:
+    job-store-type: jdbc
+---
+spring:
+  config:
+    activate:
+      on-profile: develop
+  cloud:
+    aws:
+      credentials:
+        access-key: ${spring-cloud-aws-credentials-access-key}
+        secret-key: ${spring-cloud-aws-credentials-secret-key}
+      sqs:
+        region: ${spring-cloud-aws-sqs-region}
+logging:
+  level:
+    com:
+      junyounggoat:
+        dreamstore:
+          userbatch: DEBUG
+---
+spring:
+  config:
+    activate:
+      on-profile: develop-h2
+  datasource:
+    url: jdbc:h2:mem:testdb;DATABASE_TO_LOWER=TRUE;
+---
+spring:
+  config:
+    activate:
+      on-profile: develop-mysql
+  datasource:
+    url: ${spring-datasource-url}
+    username: ${spring-datasource-username}
+    password: ${spring-datasource-password}
+  batch:
+    jdbc:
+      initialize-schema: never
+  quartz:
+    jdbc:
+      initialize-schema: never
