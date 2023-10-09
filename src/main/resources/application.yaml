@@ -8,6 +8,8 @@ spring:
       develop-mysql:
         - common
         - develop
+      production:
+        - common
 ---
 spring:
   config:
@@ -18,11 +20,6 @@ spring:
       enabled: false
   quartz:
     job-store-type: jdbc
----
-spring:
-  config:
-    activate:
-      on-profile: develop
   cloud:
     aws:
       credentials:
@@ -30,6 +27,11 @@ spring:
         secret-key: ${spring-cloud-aws-credentials-secret-key}
       sqs:
         region: ${spring-cloud-aws-sqs-region}
+---
+spring:
+  config:
+    activate:
+      on-profile: develop
 logging:
   level:
     com:
@@ -48,6 +50,21 @@ spring:
   config:
     activate:
       on-profile: develop-mysql
+  datasource:
+    url: ${spring-datasource-url}
+    username: ${spring-datasource-username}
+    password: ${spring-datasource-password}
+  batch:
+    jdbc:
+      initialize-schema: never
+  quartz:
+    jdbc:
+      initialize-schema: never
+---
+spring:
+  config:
+    activate:
+      on-profile: production
   datasource:
     url: ${spring-datasource-url}
     username: ${spring-datasource-username}
