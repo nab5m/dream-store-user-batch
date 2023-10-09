@@ -14,8 +14,8 @@ public class UserPrivacyService {
     private final SendingEventRepository sendingEventRepository;
     private final ExpiredUserPrivacyRepository expiredUserPrivacyRepository;
 
-    public void sendEventDeleteExpiredUserPrivacy() {
-        sendingEventRepository.sendEventDeleteExpiredUserPrivacy();
+    public void sendEventFindPrivacyExpiredUser() {
+        sendingEventRepository.sendEventFindPrivacyExpiredUser();
     }
 
     public void backupExpiredUserPrivacy(ExpiredUserPrivacy expiredUserPrivacy) {

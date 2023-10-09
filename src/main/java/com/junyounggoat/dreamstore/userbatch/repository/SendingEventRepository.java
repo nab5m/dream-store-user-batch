@@ -15,10 +15,10 @@ public class SendingEventRepository {
     private final SqsAsyncClient sqsAsyncClient;
 
 
-    public void sendEventDeleteExpiredUserPrivacy() {
+    public void sendEventFindPrivacyExpiredUser() {
         SqsTemplate sqsTemplate = SqsTemplate.builder().sqsAsyncClient(sqsAsyncClient).build();
 
-        sqsTemplate.send(to -> to.queue(QueueName.DELETE_EXPIRE_USER_PRIVACY)
+        sqsTemplate.send(to -> to.queue(QueueName.FIND_PRIVACY_EXPIRED_USER)
                 .payload(LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME)));
     }
 }

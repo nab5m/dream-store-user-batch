@@ -16,9 +16,9 @@ import org.springframework.transaction.PlatformTransactionManager;
 
 @Configuration
 @RequiredArgsConstructor
-public class DeleteExpiredUserPrivacyJobConfig {
-    public static final String JOB_NAME = "DeleteExpiredUserPrivacyJob";
-    private final String STEP_NAME = "DeleteExpiredUserPrivacyStep";
+public class FindPrivacyExpiredUserJobConfig {
+    public static final String JOB_NAME = "FindPrivacyExpiredUserJob";
+    private final String STEP_NAME = "FindPrivacyExpiredUserStep";
 
     private final JobRepository jobRepository;
     private final PlatformTransactionManager platformTransactionManager;
@@ -27,24 +27,24 @@ public class DeleteExpiredUserPrivacyJobConfig {
 
     @Bean
     @Qualifier(JOB_NAME)
-    public Job deleteExpiredUserPrivacyJob() {
+    public Job findPrivacyExpiredUserJob() {
         return new JobBuilder(JOB_NAME, jobRepository)
-                .start(deleteExpiredUserPrivacyStep())
+                .start(findPrivacyExpiredUserStep())
                 .build();
     }
 
     @Bean
-    public Step deleteExpiredUserPrivacyStep() {
+    public Step findPrivacyExpiredUserStep() {
         return new StepBuilder(STEP_NAME, jobRepository)
-                .tasklet(deleteExpiredUserPrivacyTasklet(), platformTransactionManager)
+                .tasklet(findPrivacyExpiredUserTasklet(), platformTransactionManager)
                 .allowStartIfComplete(true)
                 .build();
     }
 
     @Bean
-    public Tasklet deleteExpiredUserPrivacyTasklet() {
+    public Tasklet findPrivacyExpiredUserTasklet() {
         return ((contribution, chunkContext) -> {
-            userPrivacyService.sendEventDeleteExpiredUserPrivacy();
+            userPrivacyService.sendEventFindPrivacyExpiredUser();
             return RepeatStatus.FINISHED;
         });
     }

@@ -1,7 +1,7 @@
 package com.junyounggoat.dreamstore.userbatch.scheduler;
 
 
-import com.junyounggoat.dreamstore.userbatch.batch.DeleteExpiredUserPrivacyJobConfig;
+import com.junyounggoat.dreamstore.userbatch.batch.FindPrivacyExpiredUserJobConfig;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
@@ -18,20 +18,20 @@ import org.springframework.stereotype.Component;
 public class ExpireUserPrivacyJob implements Job {
     private final JobLauncher batchJobLauncher;
 
-    private final org.springframework.batch.core.Job deleteExpiredUserPrivacyJob;
+    private final org.springframework.batch.core.Job findPrivacyExpiredUserJob;
 
     public ExpireUserPrivacyJob(JobLauncher batchJobLauncher,
-                                @Qualifier(DeleteExpiredUserPrivacyJobConfig.JOB_NAME)
-                                org.springframework.batch.core.Job deleteExpiredUserPrivacyJob)
+                                @Qualifier(FindPrivacyExpiredUserJobConfig.JOB_NAME)
+                                org.springframework.batch.core.Job findPrivacyExpiredUserJob)
     {
         this.batchJobLauncher = batchJobLauncher;
-        this.deleteExpiredUserPrivacyJob = deleteExpiredUserPrivacyJob;
+        this.findPrivacyExpiredUserJob = findPrivacyExpiredUserJob;
     }
 
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
         try {
-            batchJobLauncher.run(deleteExpiredUserPrivacyJob, new JobParametersBuilder().toJobParameters());
+            batchJobLauncher.run(findPrivacyExpiredUserJob, new JobParametersBuilder().toJobParameters());
         } catch (JobExecutionAlreadyRunningException e) {
             throw new RuntimeException(e);
         } catch (JobRestartException e) {
