@@ -4,9 +4,7 @@ package com.junyounggoat.dreamstore.userbatch.batch;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.junyounggoat.dreamstore.userbatch.dynamodb.ExpiredUserPrivacy;
 import com.junyounggoat.dreamstore.userbatch.service.UserPrivacyService;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.job.builder.JobBuilder;
@@ -26,6 +24,8 @@ import java.util.Map;
 public class BackupExpiredUserPrivacyJobConfig {
     public static final String JOB_NAME = "BackupExpiredUserPrivacyJob";
     public static final String STEP_NAME = "BackupExpiredUserPrivacyStep";
+
+    public static final String JOB_PARAMETER_MESSAGE_BODY_KEY = "SqsMessageBody";
 
     private final JobRepository jobRepository;
     private final PlatformTransactionManager platformTransactionManager;
@@ -54,7 +54,8 @@ public class BackupExpiredUserPrivacyJobConfig {
         return ((contribution, chunkContext) -> {
             Map<String, Object> jobParameters = chunkContext.getStepContext().getJobParameters();
             BackupExpiredUserPrivacyJobParameters backupExpiredUserPrivacyJobParameters =
-                    objectMapper.readValue(objectMapper.writeValueAsString(jobParameters), BackupExpiredUserPrivacyJobParameters.class);
+                    objectMapper.readValue(jobParameters.get(JOB_PARAMETER_MESSAGE_BODY_KEY).toString(),
+                            BackupExpiredUserPrivacyJobParameters.class);
 
             userPrivacyService.backupExpiredUserPrivacy(backupExpiredUserPrivacyJobParameters.getExpiredUserPrivacy());
             return RepeatStatus.FINISHED;
@@ -62,8 +63,10 @@ public class BackupExpiredUserPrivacyJobConfig {
     }
 
     @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
     @Getter
     public static class BackupExpiredUserPrivacyJobParameters {
-        private final ExpiredUserPrivacy expiredUserPrivacy;
+        private ExpiredUserPrivacy expiredUserPrivacy;
     }
 }

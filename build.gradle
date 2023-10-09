@@ -38,6 +38,7 @@ dependencies {
 	runtimeOnly 'com.mysql:mysql-connector-j'
 	implementation 'io.awspring.cloud:spring-cloud-aws-starter-sqs'
 	implementation 'io.awspring.cloud:spring-cloud-aws-starter-dynamodb'
+	implementation 'org.springframework.boot:spring-boot-starter-json'
 }
 
 dependencyManagement {

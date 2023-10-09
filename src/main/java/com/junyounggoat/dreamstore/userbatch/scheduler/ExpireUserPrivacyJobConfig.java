@@ -25,6 +25,7 @@ public class ExpireUserPrivacyJobConfig {
     @Qualifier(TRIGGER_NAME)
     public Trigger expireUserPrivacyJobTrigger() {
         return TriggerBuilder.newTrigger()
+                .withIdentity(TRIGGER_NAME)
                 .forJob(expireUserPrivacyJobDetail())
                 .withSchedule(CronScheduleBuilder.dailyAtHourAndMinute(3, 0))
                 .build();

@@ -13,7 +13,7 @@ import software.amazon.awssdk.services.dynamodb.model.ResourceNotFoundException;
 @Repository
 @RequiredArgsConstructor
 public class ExpiredUserPrivacyRepository {
-    private static final String EXPIRE_USER_PRIVACY_TABLE_NAME = "expire_user_privacy";
+    private static final String EXPIRED_USER_PRIVACY_TABLE_NAME = "expired_user_privacy";
 
     private final DynamoDbClient dynamoDbClient;
 
@@ -23,14 +23,14 @@ public class ExpiredUserPrivacyRepository {
         ExpiredUserPrivacy withCreationDateTime = expiredUserPrivacy.withNewCreationDateTime();
 
         PutItemRequest putItemRequest = PutItemRequest.builder()
-                .tableName(EXPIRE_USER_PRIVACY_TABLE_NAME)
+                .tableName(EXPIRED_USER_PRIVACY_TABLE_NAME)
                 .item(withCreationDateTime.toMap())
                 .build();
 
         try {
             dynamoDbClient.putItem(putItemRequest);
         } catch (ResourceNotFoundException e) {
-            logger.error("DynamoDB table(" + EXPIRE_USER_PRIVACY_TABLE_NAME + ")not found", e);
+            logger.error("DynamoDB table(" + EXPIRED_USER_PRIVACY_TABLE_NAME + ")not found", e);
             throw new RuntimeException(e);
         } catch (DynamoDbException e) {
             logger.error("DynamoDbException", e);

@@ -1,5 +1,6 @@
 package com.junyounggoat.dreamstore.userbatch.dynamodb;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
@@ -34,6 +35,8 @@ public class ExpiredUserPrivacy {
 
     @DynamoDbBean
     @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class User {
         private String userPersonName;
 
@@ -51,6 +54,8 @@ public class ExpiredUserPrivacy {
 
     @DynamoDbBean
     @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class UserLoginCredentials {
         private String loginUserName;
 
